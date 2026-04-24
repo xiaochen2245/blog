@@ -1,0 +1,410 @@
+@import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600;700&family=Space+Grotesk:wght@400;500;600;700&display=swap');
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* 代码高亮样式 */
+@import "highlight.js/styles/github-dark.css";
+
+:root {
+  --bg-primary: #0a0a0f;
+  --bg-secondary: #12121a;
+  --bg-card: #16161f;
+  --border: #1e1e2e;
+  --text-primary: #e4e4e7;
+  --text-secondary: #71717a;
+  --text-muted: #52525b;
+  --accent: #22d3ee;
+  --accent-dim: #0891b2;
+  --accent-glow: rgba(34, 211, 238, 0.15);
+  --green: #4ade80;
+  --green-dim: #22c55e;
+  --red: #f87171;
+  --yellow: #fbbf24;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  font-family: 'Space Grotesk', -apple-system, BlinkMacSystemFont, sans-serif;
+  background-color: var(--bg-primary);
+  color: var(--text-primary);
+  line-height: 1.7;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  min-height: 100vh;
+}
+
+/* 背景网格效果 */
+body::before {
+  content: '';
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-image:
+    linear-gradient(rgba(34, 211, 238, 0.03) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(34, 211, 238, 0.03) 1px, transparent 1px);
+  background-size: 50px 50px;
+  pointer-events: none;
+  z-index: 0;
+}
+
+/* 标题字体 */
+h1, h2, h3, h4, h5, h6 {
+  font-family: 'JetBrains Mono', monospace;
+  font-weight: 600;
+  line-height: 1.3;
+  letter-spacing: -0.02em;
+}
+
+/* 自定义滚动条 */
+::-webkit-scrollbar {
+  width: 6px;
+}
+
+::-webkit-scrollbar-track {
+  background: var(--bg-secondary);
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--border);
+  border-radius: 3px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: var(--accent-dim);
+}
+
+/* 动画 */
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+@keyframes pulse-glow {
+  0%, 100% { box-shadow: 0 0 5px var(--accent), 0 0 10px var(--accent-glow); }
+  50% { box-shadow: 0 0 10px var(--accent), 0 0 20px var(--accent-glow); }
+}
+
+@keyframes scan-line {
+  0% { transform: translateY(-100%); }
+  100% { transform: translateY(100vh); }
+}
+
+@keyframes blink {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0; }
+}
+
+.animate-fade-in-up {
+  animation: fadeInUp 0.5s ease-out forwards;
+}
+
+.animate-fade-in {
+  animation: fadeIn 0.4s ease-out forwards;
+}
+
+.animate-pulse-glow {
+  animation: pulse-glow 2s ease-in-out infinite;
+}
+
+.animate-blink {
+  animation: blink 1s step-end infinite;
+}
+
+/* 延迟类 */
+.delay-1 { animation-delay: 0.1s; }
+.delay-2 { animation-delay: 0.2s; }
+.delay-3 { animation-delay: 0.3s; }
+.delay-4 { animation-delay: 0.4s; }
+.delay-5 { animation-delay: 0.5s; }
+.delay-6 { animation-delay: 0.6s; }
+
+/* 初始隐藏，带动画 */
+.animate-on-load {
+  opacity: 0;
+}
+
+/* 终端光标 */
+.cursor::after {
+  content: '█';
+  animation: blink 1s step-end infinite;
+  color: var(--accent);
+}
+
+/* 霓虹文字效果 */
+.neon-text {
+  color: var(--accent);
+  text-shadow:
+    0 0 5px var(--accent),
+    0 0 10px var(--accent-glow),
+    0 0 20px var(--accent-glow);
+}
+
+/* 霓虹边框 */
+.neon-border {
+  border: 1px solid var(--accent);
+  box-shadow:
+    0 0 5px var(--accent-glow),
+    inset 0 0 5px var(--accent-glow);
+}
+
+/* 标签样式 */
+.tag {
+  display: inline-block;
+  padding: 0.25rem 0.75rem;
+  font-size: 0.7rem;
+  font-weight: 500;
+  font-family: 'JetBrains Mono', monospace;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  border-radius: 2px;
+  background-color: transparent;
+  color: var(--accent);
+  border: 1px solid var(--accent);
+  transition: all 0.2s ease;
+}
+
+.tag:hover {
+  background-color: var(--accent);
+  color: var(--bg-primary);
+  box-shadow: 0 0 10px var(--accent-glow);
+}
+
+.tag.active {
+  background-color: var(--accent);
+  color: var(--bg-primary);
+}
+
+/* 分类标签 - 不同颜色 */
+.tag-tech {
+  border-color: var(--accent);
+  color: var(--accent);
+}
+
+.tag-tech:hover, .tag-tech.active {
+  background-color: var(--accent);
+}
+
+.tag-life {
+  border-color: var(--green);
+  color: var(--green);
+}
+
+.tag-life:hover, .tag-life.active {
+  background-color: var(--green);
+}
+
+.tag-default {
+  border-color: var(--yellow);
+  color: var(--yellow);
+}
+
+.tag-default:hover, .tag-default.active {
+  background-color: var(--yellow);
+}
+
+/* 文章卡片 */
+.article-card {
+  position: relative;
+  padding: 1.5rem 0;
+  border-bottom: 1px solid var(--border);
+  transition: all 0.3s ease;
+}
+
+.article-card::before {
+  content: '>';
+  position: absolute;
+  left: -1.5rem;
+  top: 1.5rem;
+  font-family: 'JetBrains Mono', monospace;
+  color: var(--accent);
+  opacity: 0;
+  transform: translateX(-10px);
+  transition: all 0.3s ease;
+}
+
+.article-card:hover {
+  padding-left: 2rem;
+}
+
+.article-card:hover::before {
+  opacity: 1;
+  transform: translateX(0);
+}
+
+/* 终端风格按钮 */
+.terminal-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.5rem 1rem;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.8rem;
+  background-color: transparent;
+  color: var(--accent);
+  border: 1px solid var(--accent);
+  border-radius: 4px;
+  transition: all 0.2s ease;
+  cursor: pointer;
+}
+
+.terminal-btn:hover {
+  background-color: var(--accent);
+  color: var(--bg-primary);
+  box-shadow: 0 0 15px var(--accent-glow);
+}
+
+/* 导航样式 */
+.nav-link {
+  position: relative;
+  padding: 0.25rem 0;
+  font-size: 0.85rem;
+  font-weight: 500;
+  color: var(--text-secondary);
+  transition: color 0.2s ease;
+  font-family: 'JetBrains Mono', monospace;
+}
+
+.nav-link:hover {
+  color: var(--accent);
+}
+
+.nav-link::after {
+  content: '';
+  position: absolute;
+  left: 0;
+  bottom: 0;
+  width: 100%;
+  height: 1px;
+  background-color: var(--accent);
+  transform: scaleX(0);
+  transform-origin: right;
+  transition: transform 0.3s ease;
+}
+
+.nav-link:hover::after {
+  transform: scaleX(1);
+  transform-origin: left;
+}
+
+/* 引用样式 */
+blockquote {
+  border-left: 3px solid var(--accent);
+  padding-left: 1.5rem;
+  margin: 2rem 0;
+  color: var(--text-secondary);
+  font-style: italic;
+  background-color: var(--bg-secondary);
+  padding: 1rem 1.5rem;
+  border-radius: 0 4px 4px 0;
+}
+
+/* 代码块 */
+pre {
+  background-color: var(--bg-card) !important;
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  padding: 1.25rem !important;
+  overflow-x: auto;
+  margin: 1.5rem 0;
+  font-family: 'JetBrains Mono', monospace !important;
+  font-size: 0.85rem !important;
+  line-height: 1.6 !important;
+}
+
+code {
+  font-family: 'JetBrains Mono', monospace;
+}
+
+/* 行内代码 */
+p code, li code {
+  background-color: var(--bg-card);
+  padding: 0.15rem 0.4rem;
+  border-radius: 3px;
+  font-size: 0.85em;
+  border: 1px solid var(--border);
+  color: var(--accent);
+}
+
+/* Selection */
+::selection {
+  background-color: var(--accent);
+  color: var(--bg-primary);
+}
+
+/* Focus */
+:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 2px;
+}
+
+/* 装饰性元素 */
+.decorator {
+  font-family: 'JetBrains Mono', monospace;
+  color: var(--text-muted);
+}
+
+.decorator::before {
+  content: '// ';
+}
+
+/* 终端窗口样式 */
+.terminal-window {
+  background-color: var(--bg-secondary);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  overflow: hidden;
+}
+
+.terminal-header {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.75rem 1rem;
+  background-color: var(--bg-card);
+  border-bottom: 1px solid var(--border);
+}
+
+.terminal-dot {
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+}
+
+.terminal-dot.red { background-color: var(--red); }
+.terminal-dot.yellow { background-color: var(--yellow); }
+.terminal-dot.green { background-color: var(--green); }
+
+/* 扫描线效果 */
+.scan-line::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 2px;
+  background: linear-gradient(90deg, transparent, var(--accent), transparent);
+  animation: scan-line 3s linear infinite;
+  opacity: 0.3;
+}
