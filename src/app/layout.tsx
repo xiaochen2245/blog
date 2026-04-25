@@ -53,6 +53,9 @@ export default function RootLayout({
                 <Link href="/about" className="nav-link">
                   ./about
                 </Link>
+                <Link href="/manage" className="nav-link">
+                  ./manage
+                </Link>
                 <a
                   href="https://github.com/xiaochen2245"
                   target="_blank"
