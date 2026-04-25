@@ -45,10 +45,10 @@ export default function About() {
           </div>
           <div className="space-y-4 text-[#e4e4e7] leading-relaxed">
             <p>
-              你好！我是一名软件开发者，热爱技术，享受通过代码解决实际问题的过程。
+              目前正在进行AscendC算子学习与开发当中，正在被性能优化难题困扰。
             </p>
             <p>
-              这个博客用来记录我在技术学习和个人成长过程中的心得体会。希望这些内容能对你有所帮助。
+              这个博客用来记录技术学习和个人成长过程中的心得体会。希望这些内容能对你有所帮助。
             </p>
           </div>
         </section>
@@ -101,7 +101,7 @@ export default function About() {
               <svg className="w-5 h-5 text-[#71717a] group-hover:text-[#22d3ee] transition-colors" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
               </svg>
-              <span className="font-mono text-sm text-[#71717a] group-hover:text-[#e4e4e7] transition-colors">your.email@example.com</span>
+              <span className="font-mono text-sm text-[#71717a] group-hover:text-[#e4e4e7] transition-colors">jett.chen@lednets.com</span>
             </a>
             <a
               href="https://github.com/xiaochen2245"
