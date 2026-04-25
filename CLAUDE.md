@@ -88,4 +88,4 @@ EDITOR_PASSWORD       # Password for editor/manage pages
 
 - **Do not include Co-Authored-By trailers** in commit messages
 - Commits should be attributed to jett.Chen <1519755291@qq.com>
-- Use concise, descriptive commit messages in Chinese or English
+- **All commit messages must be in Chinese**
