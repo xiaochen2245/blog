@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import "./globals.css";
+import PressStartGate from "./components/PressStartGate";
 
 export const metadata: Metadata = {
   title: "404::NULL | 技术备忘录",
@@ -15,6 +16,7 @@ export default function RootLayout({
   return (
     <html lang="zh-CN">
       <body className="relative">
+        <PressStartGate>
         {/* Header */}
         <header className="fixed top-0 left-0 right-0 z-40 bg-[#0a0a0f]/90 backdrop-blur-md border-b border-[#1e1e2e]">
           <div className="max-w-4xl mx-auto px-6">
@@ -52,7 +54,7 @@ export default function RootLayout({
                   ./about
                 </Link>
                 <a
-                  href="https://github.com"
+                  href="https://github.com/xiaochen2245"
                   target="_blank"
                   rel="noopener noreferrer"
                   className="nav-link flex items-center gap-1"
@@ -98,6 +100,7 @@ export default function RootLayout({
         <div className="fixed inset-0 pointer-events-none z-50 overflow-hidden">
           <div className="absolute w-full h-[1px] bg-gradient-to-r from-transparent via-[#22d3ee]/20 to-transparent animate-[scan-line_8s_linear_infinite]" />
         </div>
+        </PressStartGate>
       </body>
     </html>
   );
