@@ -83,3 +83,9 @@ EDITOR_PASSWORD       # Password for editor/manage pages
 - `src/app/about/page.tsx` - About page
 - `src/lib/posts.ts` - Post data fetching utilities
 - `src/app/components/PressStart.tsx` - Boot animation overlay
+
+## Git Commit Guidelines
+
+- **Do not include Co-Authored-By trailers** in commit messages
+- Commits should be attributed to jett.Chen <1519755291@qq.com>
+- Use concise, descriptive commit messages in Chinese or English
