@@ -91,7 +91,7 @@ export default function EditorPage() {
   if (!isVerified) {
     return (
       <div className="max-w-md mx-auto">
-        <div className="terminal-window" dataTitle="editor.sh --auth">
+        <div className="terminal-window" data-title="editor.sh --auth">
           <div className="section-header">
             <span>$</span> ./editor.sh --auth
           </div>

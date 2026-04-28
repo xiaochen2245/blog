@@ -78,17 +78,7 @@ export default async function Post({
 
       {/* 文章内容 */}
       <div
-        className="prose prose-lg max-w-none"
-        style={{
-          '--tw-prose-body': 'var(--text)',
-          '--tw-prose-headings': 'var(--text-bright)',
-          '--tw-prose-links': 'var(--accent)',
-          '--tw-prose-code': 'var(--accent)',
-          '--tw-prose-pre-bg': 'var(--bg-secondary)',
-          '--tw-prose-pre': 'var(--text)',
-          '--tw-prose-quotes': 'var(--text-dim)',
-          '--tw-prose-hr': 'var(--border)',
-        }}
+        className="prose prose-lg max-w-none prose-invert"
         dangerouslySetInnerHTML={{ __html: content }}
       />
 
