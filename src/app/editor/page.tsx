@@ -25,9 +25,14 @@ export default function EditorPage() {
       StarterKit,
       LinkExtension.configure({ openOnClick: false }),
       Image,
-      Placeholder.configure({ placeholder: '开始写文章...' }),
+      Placeholder.configure({ placeholder: 'start writing...' }),
     ],
     content: '',
+    editorProps: {
+      attributes: {
+        class: 'prose prose-lg max-w-none p-4 min-h-[300px] outline-none',
+      },
+    },
   });
 
   const generateSlug = (text: string) => {
@@ -46,7 +51,7 @@ export default function EditorPage() {
 
   const handleSubmit = async () => {
     if (!title || !slug || !editor?.getHTML()) {
-      setMessage({ type: 'error', text: '请填写标题和内容' });
+      setMessage({ type: 'error', text: 'error: title and content required' });
       return;
     }
 
@@ -70,14 +75,14 @@ export default function EditorPage() {
       });
 
       if (res.ok) {
-        setMessage({ type: 'success', text: '文章保存成功！' });
+        setMessage({ type: 'success', text: 'save: success // redirecting...' });
         setTimeout(() => router.push('/'), 1500);
       } else {
         const data = await res.json();
-        setMessage({ type: 'error', text: data.error || '保存失败' });
+        setMessage({ type: 'error', text: `error: ${data.error || 'save failed'}` });
       }
     } catch {
-      setMessage({ type: 'error', text: '网络错误' });
+      setMessage({ type: 'error', text: 'error: network failure' });
     } finally {
       setIsSubmitting(false);
     }
@@ -85,18 +90,26 @@ export default function EditorPage() {
 
   if (!isVerified) {
     return (
-      <div className="max-w-md mx-auto mt-20">
-        <h1 className="text-2xl font-bold mb-6 neon-text">文章编辑器</h1>
-        <input
-          type="password"
-          placeholder="输入编辑密码"
-          value={password}
-          onChange={(e) => setPassword(e.target.value)}
-          className="w-full p-3 bg-[#0f0f14] border border-[#1e1e2e] rounded font-mono text-sm"
-        />
-        <button onClick={() => setIsVerified(true)} className="mt-4 terminal-btn">
-          验证
-        </button>
+      <div className="max-w-md mx-auto">
+        <div className="terminal-window" dataTitle="editor.sh --auth">
+          <div className="section-header">
+            <span>$</span> ./editor.sh --auth
+          </div>
+          <p className="text-[var(--text-dim)] text-sm mb-4">// enter password to continue</p>
+          <input
+            type="password"
+            placeholder="password: "
+            value={password}
+            onChange={(e) => setPassword(e.target.value)}
+            className="w-full p-3 bg-[var(--bg-secondary)] border border-[var(--border)] font-mono text-sm text-[var(--text)]"
+          />
+          <button
+            onClick={() => setIsVerified(true)}
+            className="mt-4 px-4 py-2 bg-[var(--accent)] text-[var(--bg)] font-mono text-sm hover:opacity-80 transition-opacity"
+          >
+            <span className="text-[var(--bg)]">$</span> verify
+          </button>
+        </div>
       </div>
     );
   }
@@ -104,59 +117,59 @@ export default function EditorPage() {
   return (
     <div className="max-w-4xl mx-auto">
       <div className="mb-6">
-        <Link
-          href="/"
-          className="text-sm font-mono text-[#71717a] hover:text-[#22d3ee]"
-        >
-          ← 返回
+        <Link href="/" className="nav-item">
+          cd ..
         </Link>
       </div>
 
-      <h1 className="text-2xl font-bold mb-6 neon-text">文章编辑器</h1>
+      <div className="terminal-window mb-6" data-title="editor.sh">
+        <div className="section-header">
+          <span>$</span> vim new_post.md
+        </div>
+        <p className="text-[var(--accent)] text-sm">// authenticated</p>
+      </div>
 
       <div className="space-y-4">
-        <div className="text-xs font-mono text-[#4ade80]">✓ 已验证</div>
-
         <input
           type="text"
-          placeholder="文章标题"
+          placeholder="title: "
           value={title}
           onChange={(e) => handleTitleChange(e.target.value)}
-          className="w-full p-3 bg-[#0f0f14] border border-[#1e1e2e] rounded font-mono"
+          className="w-full p-3 bg-[var(--bg-secondary)] border border-[var(--border)] font-mono text-[var(--text)]"
         />
 
         <textarea
-          placeholder="文章描述"
+          placeholder="description: "
           value={description}
           onChange={(e) => setDescription(e.target.value)}
-          className="w-full p-3 bg-[#0f0f14] border border-[#1e1e2e] rounded font-mono h-20"
+          className="w-full p-3 bg-[var(--bg-secondary)] border border-[var(--border)] font-mono text-[var(--text)] h-20"
         />
 
         <div className="grid grid-cols-2 gap-4">
           <input
             type="text"
-            placeholder="标签（逗号分隔）"
+            placeholder="tags: (comma separated)"
             value={tags}
             onChange={(e) => setTags(e.target.value)}
-            className="p-3 bg-[#0f0f14] border border-[#1e1e2e] rounded font-mono"
+            className="p-3 bg-[var(--bg-secondary)] border border-[var(--border)] font-mono text-[var(--text)]"
           />
           <input
             type="text"
-            placeholder="slug"
+            placeholder="slug: "
             value={slug}
             onChange={(e) => setSlug(e.target.value)}
-            className="p-3 bg-[#0f0f14] border border-[#1e1e2e] rounded font-mono"
+            className="p-3 bg-[var(--bg-secondary)] border border-[var(--border)] font-mono text-[var(--text)]"
           />
         </div>
 
-        <div className="border border-[#1e1e2e] rounded overflow-hidden">
-          <div className="flex gap-2 p-2 bg-[#0f0f14] border-b border-[#1e1e2e]">
+        <div className="border border-[var(--border)] rounded overflow-hidden">
+          <div className="flex gap-2 p-2 bg-[var(--bg-secondary)] border-b border-[var(--border)]">
             <button
               onClick={() => editor?.chain().focus().toggleBold().run()}
               className={`p-2 rounded font-bold ${
                 editor?.isActive('bold')
-                  ? 'bg-[#22d3ee] text-[#0a0a0f]'
-                  : 'hover:bg-[#1e1e2e]'
+                  ? 'bg-[var(--accent)] text-[var(--bg)]'
+                  : 'hover:bg-[var(--bg-card)] text-[var(--text)]'
               }`}
             >
               B
@@ -165,42 +178,42 @@ export default function EditorPage() {
               onClick={() => editor?.chain().focus().toggleItalic().run()}
               className={`p-2 rounded ${
                 editor?.isActive('italic')
-                  ? 'bg-[#22d3ee] text-[#0a0a0f]'
-                  : 'hover:bg-[#1e1e2e]'
+                  ? 'bg-[var(--accent)] text-[var(--bg)]'
+                  : 'hover:bg-[var(--bg-card)] text-[var(--text)]'
               }`}
             >
               I
             </button>
             <button
               onClick={() => {
-                const url = prompt('输入链接 URL');
+                const url = prompt('url: ');
                 if (url) editor?.chain().focus().setLink({ href: url }).run();
               }}
-              className="p-2 rounded hover:bg-[#1e1e2e]"
+              className="p-2 rounded hover:bg-[var(--bg-card)] text-[var(--text)]"
             >
-              🔗
+              link
             </button>
             <button
               onClick={() => {
-                const url = prompt('输入图片 URL');
+                const url = prompt('image url: ');
                 if (url) editor?.chain().focus().setImage({ src: url }).run();
               }}
-              className="p-2 rounded hover:bg-[#1e1e2e]"
+              className="p-2 rounded hover:bg-[var(--bg-card)] text-[var(--text)]"
             >
-              🖼
+              img
             </button>
           </div>
 
           <EditorContent
             editor={editor}
-            className="prose prose-invert max-w-none p-4 min-h-[300px]"
+            className="bg-[var(--bg-secondary)] text-[var(--text)]"
           />
         </div>
 
         {message && (
           <div
             className={`text-sm font-mono ${
-              message.type === 'success' ? 'text-[#4ade80]' : 'text-[#f87171]'
+              message.type === 'success' ? 'text-[var(--accent)]' : 'text-[var(--red)]'
             }`}
           >
             {message.text}
@@ -210,9 +223,9 @@ export default function EditorPage() {
         <button
           onClick={handleSubmit}
           disabled={isSubmitting}
-          className="terminal-btn"
+          className="px-4 py-2 bg-[var(--accent)] text-[var(--bg)] font-mono text-sm hover:opacity-80 transition-opacity"
         >
-          {isSubmitting ? '保存中...' : '保存文章'}
+          <span className="text-[var(--bg)]">$</span> {isSubmitting ? 'saving...' : 'save'}
         </button>
       </div>
     </div>

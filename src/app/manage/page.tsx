@@ -41,14 +41,14 @@ export default function ManagePage() {
       });
 
       if (res.ok) {
-        setMessage({ type: 'success', text: '删除成功' });
+        setMessage({ type: 'success', text: 'delete: success' });
         fetchPosts();
       } else {
         const data = await res.json();
-        setMessage({ type: 'error', text: data.error || '删除失败' });
+        setMessage({ type: 'error', text: `error: ${data.error || 'delete failed'}` });
       }
     } catch {
-      setMessage({ type: 'error', text: '网络错误' });
+      setMessage({ type: 'error', text: 'error: network failure' });
     }
   };
 
@@ -60,18 +60,26 @@ export default function ManagePage() {
 
   if (!isVerified) {
     return (
-      <div className="max-w-md mx-auto mt-20">
-        <h1 className="text-2xl font-bold mb-6 neon-text">文章管理</h1>
-        <input
-          type="password"
-          placeholder="输入管理密码"
-          value={password}
-          onChange={(e) => setPassword(e.target.value)}
-          className="w-full p-3 bg-[#0f0f14] border border-[#1e1e2e] rounded font-mono text-sm"
-        />
-        <button onClick={() => setIsVerified(true)} className="mt-4 terminal-btn">
-          验证
-        </button>
+      <div className="max-w-md mx-auto">
+        <div className="terminal-window" data-title="auth.sh">
+          <div className="section-header">
+            <span>$</span> ./manage.sh --auth
+          </div>
+          <p className="text-[var(--text-dim)] text-sm mb-4">// enter password to continue</p>
+          <input
+            type="password"
+            placeholder="password: "
+            value={password}
+            onChange={(e) => setPassword(e.target.value)}
+            className="w-full p-3 bg-[var(--bg-secondary)] border border-[var(--border)] font-mono text-sm text-[var(--text)]"
+          />
+          <button
+            onClick={() => setIsVerified(true)}
+            className="mt-4 px-4 py-2 bg-[var(--accent)] text-[var(--bg)] font-mono text-sm hover:opacity-80 transition-opacity"
+          >
+            <span className="text-[var(--bg)]">$</span> verify
+          </button>
+        </div>
       </div>
     );
   }
@@ -79,23 +87,27 @@ export default function ManagePage() {
   return (
     <div className="max-w-4xl mx-auto">
       <div className="mb-6 flex items-center justify-between">
-        <Link
-          href="/"
-          className="text-sm font-mono text-[#71717a] hover:text-[#22d3ee]"
-        >
-          ← 返回
+        <Link href="/" className="nav-item">
+          cd ..
         </Link>
-        <Link href="/editor" className="terminal-btn">
-          + 新建文章
+        <Link href="/editor" className="nav-item">
+          + new_post
         </Link>
       </div>
 
-      <h1 className="text-2xl font-bold mb-6 neon-text">文章管理</h1>
+      <div className="terminal-window mb-6" data-title="manage.sh">
+        <div className="section-header">
+          <span>$</span> ls -la ./posts/
+        </div>
+        <p className="text-[var(--text-dim)] text-sm">
+          found <span className="text-[var(--accent)]">{posts.length}</span> files
+        </p>
+      </div>
 
       {message && (
         <div
           className={`text-sm font-mono mb-4 ${
-            message.type === 'success' ? 'text-[#4ade80]' : 'text-[#f87171]'
+            message.type === 'success' ? 'text-[var(--accent)]' : 'text-[var(--red)]'
           }`}
         >
           {message.text}
@@ -103,9 +115,15 @@ export default function ManagePage() {
       )}
 
       {isLoading ? (
-        <div className="text-sm font-mono text-[#71717a]">加载中...</div>
+        <div className="text-sm font-mono text-[var(--text-dim)]">
+          <span className="text-[var(--accent)]">$</span> loading...
+        </div>
       ) : posts.length === 0 ? (
-        <div className="text-sm font-mono text-[#71717a]">暂无文章</div>
+        <div className="terminal-window">
+          <div className="text-sm font-mono text-[var(--text-dim)]">
+            <span className="text-[var(--accent)]">$</span> grep: no files found
+          </div>
+        </div>
       ) : (
         <div className="space-y-4">
           {posts.map((post) => (
@@ -116,27 +134,27 @@ export default function ManagePage() {
               <div className="flex-1">
                 <Link
                   href={`/posts/${post.slug}`}
-                  className="text-lg font-bold hover:text-[#22d3ee] transition-colors"
+                  className="text-lg font-bold text-[var(--text)] hover:text-[var(--text-bright)] transition-colors"
                 >
                   {post.title}
                 </Link>
-                <div className="text-xs font-mono text-[#71717a] mt-1">
-                  {new Date(post.createdAt).toLocaleDateString('zh-CN')} ·{' '}
-                  {post.tags.join(', ') || '无标签'}
+                <div className="text-xs font-mono text-[var(--text-dim)] mt-1">
+                  {new Date(post.createdAt).toLocaleDateString('zh-CN')} · {post.tags.join(', ') || 'no tags'}
                 </div>
               </div>
               <div className="flex gap-2">
                 <Link
                   href={`/editor?slug=${post.slug}`}
-                  className="terminal-btn text-xs"
+                  className="tag text-xs"
                 >
-                  编辑
+                  [EDIT]
                 </Link>
                 <button
                   onClick={() => handleDelete(post.slug)}
-                  className="terminal-btn text-xs border-[#f87171] text-[#f87171] hover:bg-[#f87171] hover:text-[#0a0a0f]"
+                  className="tag text-xs"
+                  style={{ borderColor: 'var(--red)', color: 'var(--red)' }}
                 >
-                  删除
+                  [DEL]
                 </button>
               </div>
             </div>
