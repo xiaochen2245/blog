@@ -8,8 +8,15 @@
     "start": "next start"
   },
   "dependencies": {
+    "@prisma/client": "^5.22.0",
+    "@tiptap/extension-image": "^3.22.4",
+    "@tiptap/extension-link": "^3.22.4",
+    "@tiptap/extension-placeholder": "^3.22.4",
+    "@tiptap/react": "^3.22.4",
+    "@tiptap/starter-kit": "^3.22.4",
     "gray-matter": "4.0.3",
     "next": "15.5.15",
+    "prisma": "^5.22.0",
     "react": "18.2.0",
     "react-dom": "18.2.0",
     "rehype-highlight": "7.0.0",

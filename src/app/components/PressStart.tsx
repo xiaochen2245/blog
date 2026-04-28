@@ -16,7 +16,6 @@ export default function PressStart({ onEnter }: { onEnter: () => void }) {
     '> System ready.',
   ];
 
-  // Typing effect for boot sequence
   useEffect(() => {
     let lineIndex = 0;
     let charIndex = 0;
@@ -45,7 +44,6 @@ export default function PressStart({ onEnter }: { onEnter: () => void }) {
     return () => clearTimeout(timeout);
   }, []);
 
-  // Show ready state after boot
   useEffect(() => {
     if (bootLines.length === bootSequence.length && bootLines[bootSequence.length - 1] === bootSequence[bootSequence.length - 1]) {
       const timer = setTimeout(() => setPhase('ready'), 500);
@@ -53,7 +51,6 @@ export default function PressStart({ onEnter }: { onEnter: () => void }) {
     }
   }, [bootLines]);
 
-  // Cursor blink
   useEffect(() => {
     const interval = setInterval(() => {
       setCursorVisible(v => !v);
@@ -68,7 +65,6 @@ export default function PressStart({ onEnter }: { onEnter: () => void }) {
     }
   }, [phase, onEnter]);
 
-  // Listen for any key or click
   useEffect(() => {
     if (phase !== 'ready') return;
 
@@ -87,7 +83,7 @@ export default function PressStart({ onEnter }: { onEnter: () => void }) {
   if (phase === 'entering') {
     return (
       <div
-        className="fixed inset-0 z-[100] bg-[#0a0a0f] flex items-center justify-center"
+        className="fixed inset-0 z-[100] bg-[var(--bg)] flex items-center justify-center"
         style={{
           animation: 'fadeOut 0.6s ease-out forwards',
         }}
@@ -104,13 +100,13 @@ export default function PressStart({ onEnter }: { onEnter: () => void }) {
 
   return (
     <div
-      className="fixed inset-0 z-[100] bg-[#0a0a0f] flex items-center justify-center cursor-pointer select-none"
+      className="fixed inset-0 z-[100] bg-[var(--bg)] flex items-center justify-center cursor-pointer select-none"
       onClick={phase === 'ready' ? handleEnter : undefined}
     >
       {/* Scan line effect */}
       <div className="absolute inset-0 overflow-hidden pointer-events-none">
         <div
-          className="absolute w-full h-[2px] bg-gradient-to-r from-transparent via-[#22d3ee]/30 to-transparent"
+          className="absolute w-full h-[2px] bg-gradient-to-r from-transparent via-[var(--accent)]/30 to-transparent"
           style={{
             animation: 'scanDown 3s linear infinite',
             top: '-2px',
@@ -118,34 +114,26 @@ export default function PressStart({ onEnter }: { onEnter: () => void }) {
         />
       </div>
 
-      {/* Noise texture overlay */}
-      <div
-        className="absolute inset-0 opacity-[0.03] pointer-events-none"
-        style={{
-          backgroundImage: `url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E")`,
-        }}
-      />
-
       {/* Content */}
       <div className="relative text-center">
         {/* Boot terminal */}
         <div className="mb-8 font-mono text-left text-sm">
-          <div className="bg-[#0f0f14] border border-[#1e1e2e] rounded p-4 min-w-[320px] max-w-[480px]">
+          <div className="bg-[var(--bg-secondary)] border border-[var(--border)] p-4 min-w-[320px] max-w-[480px]">
             {bootLines.map((line, i) => (
-              <div key={i} className="text-[#71717a]">
-                <span className="text-[#22d3ee]">[{String(i + 1).padStart(2, '0')}]</span>{' '}
-                <span className={i === bootSequence.length - 1 ? 'text-[#4ade80]' : ''}>
+              <div key={i} className="text-[var(--text-dim)]">
+                <span className="text-[var(--accent)]">[{String(i + 1).padStart(2, '0')}]</span>{' '}
+                <span className={i === bootSequence.length - 1 ? 'text-[var(--accent)]' : ''}>
                   {line}
                   {i === bootSequence.length - 1 && cursorVisible && (
-                    <span className="inline-block w-2 h-4 bg-[#22d3ee] ml-1 animate-pulse" />
+                    <span className="inline-block w-2 h-4 bg-[var(--accent)] ml-1 animate-pulse" />
                   )}
                 </span>
               </div>
             ))}
             {bootLines.length < bootSequence.length && (
-              <div className="text-[#71717a]">
-                <span className="text-[#22d3ee]">[{String(bootLines.length + 1).padStart(2, '0')}]</span>{' '}
-                <span className="inline-block w-2 h-4 bg-[#22d3ee] animate-pulse" />
+              <div className="text-[var(--text-dim)]">
+                <span className="text-[var(--accent)]">[{String(bootLines.length + 1).padStart(2, '0')}]</span>{' '}
+                <span className="inline-block w-2 h-4 bg-[var(--accent)] animate-pulse" />
               </div>
             )}
           </div>
@@ -159,12 +147,12 @@ export default function PressStart({ onEnter }: { onEnter: () => void }) {
               animation: 'pulse 2s ease-in-out infinite',
             }}
           >
-            <div className="font-mono text-[#22d3ee] text-lg tracking-wider">
+            <div className="font-mono text-[var(--text)] text-lg tracking-wider">
               <span className="inline-block mr-2">▶</span>
               PRESS ANY KEY TO START
               <span className="inline-block ml-2">◀</span>
             </div>
-            <div className="mt-3 font-mono text-[#3f3f46] text-xs">
+            <div className="mt-3 font-mono text-[var(--text-dim)] text-xs">
               or click anywhere
             </div>
           </div>
@@ -172,16 +160,16 @@ export default function PressStart({ onEnter }: { onEnter: () => void }) {
       </div>
 
       {/* Corner decorations */}
-      <div className="absolute top-4 left-4 font-mono text-[#1e1e2e] text-xs">
+      <div className="absolute top-4 left-4 font-mono text-[var(--border)] text-xs">
         ┌─
       </div>
-      <div className="absolute top-4 right-4 font-mono text-[#1e1e2e] text-xs">
+      <div className="absolute top-4 right-4 font-mono text-[var(--border)] text-xs">
         ─┐
       </div>
-      <div className="absolute bottom-4 left-4 font-mono text-[#1e1e2e] text-xs">
+      <div className="absolute bottom-4 left-4 font-mono text-[var(--border)] text-xs">
         └─
       </div>
-      <div className="absolute bottom-4 right-4 font-mono text-[#1e1e2e] text-xs">
+      <div className="absolute bottom-4 right-4 font-mono text-[var(--border)] text-xs">
         ─┘
       </div>
 
